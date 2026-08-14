@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Focus - Girassóis</title>
+    <style>
+        /* Reset completo */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            background: #1a1a1a;
+        }
+
+        /* Container ocupa a tela inteira */
+        .hero {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        /* Camada da imagem de fundo - tela cheia */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1597848212624-a19eb35e2651?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            filter: blur(12px);
+            transform: scale(1.1);
+            transition: filter 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s ease;
+            will-change: filter, transform;
+        }
+
+        /* Overlay escuro para melhor contraste do texto */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            transition: background 0.6s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Container da palavra FOCUS - para capturar o hover */
+        .hero-text-wrapper {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            pointer-events: none; /* Permite que o hover funcione apenas no texto */
+        }
+
+        /* Palavra "FOCUS" - centralizada */
+        .hero-text {
+            color: #fff;
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.7),
+                0 0 60px rgba(0, 0, 0, 0.3);
+            transition: filter 0.6s ease, text-shadow 0.6s ease, color 0.5s ease, transform 0.6s ease;
+            user-select: none;
+            pointer-events: auto; /* Só aqui que o hover vai funcionar */
+            cursor: pointer;
+            position: relative;
+            padding: 20px 40px;
+        }
+
+        /* Efeito de brilho sutil no texto */
+        .hero-text::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+            filter: blur(20px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            border-radius: 50%;
+        }
+
+        /* HOVER APENAS NA PALAVRA: imagem foca, texto desfoca */
+        .hero-text:hover ~ .hero-bg {
+            filter: blur(0px) brightness(1.05);
+            transform: scale(1);
+        }
+
+        .hero-text:hover ~ .hero-overlay {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-text:hover {
+            filter: blur(8px);
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.15);
+            transform: scale(1.02);
+        }
+
+        .hero-text:hover::before {
+            opacity: 1;
+        }
+
+        /* Para garantir que o hover funcione mesmo com a estrutura HTML */
+        .hero:has(.hero-text:hover) .hero-bg {
+            filter: blur(0px) brightness(1.05);
+            transform: scale(1);
+        }
+
+        .hero:has(.hero-text:hover) .hero-overlay {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animação de entrada */
+        @keyframes fadeInScale {
+            0% { 
+                opacity: 0; 
+                transform: scale(1.02);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+        }
+        .hero {
+            animation: fadeInScale 1s ease-out;
+        }
+
+        /* Responsivo para telas muito pequenas */
+        @media (max-width: 480px) {
+            .hero-text {
+                font-size: clamp(3rem, 12vw, 5rem);
+                letter-spacing: 0.05em;
+                padding: 10px 20px;
+            }
+            .hero-bg {
+                filter: blur(8px);
+            }
+        }
+
+        /* Para telas de altura pequena */
+        @media (max-height: 500px) {
+            .hero-text {
+                font-size: clamp(2.5rem, 8vh, 4rem);
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <!-- Imagem de fundo: plantação de girassóis (desfocada) -->
+        <div class="hero-bg"></div>
+        
+        <!-- Overlay para melhor contraste -->
+        <div class="hero-overlay"></div>
+        
+        <!-- Wrapper para centralizar a palavra -->
+        <div class="hero-text-wrapper">
+            <!-- Palavra FOCUS - o hover só funciona aqui -->
+            <span class="hero-text">FOCUS</span>
+        </div>
+    </div>
+</body>
+</html>
